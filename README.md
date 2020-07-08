@@ -13,10 +13,17 @@
 
 ## Installing
 
+Via npm:
+
 ```bash
 npm i -g dbio-cli
 ```
+Or, if you don't have npm installed:
+
+Download binaries from the [github release page](https://github.com/Assfugil/dbio-cli/releases) .
+
 ## Command line help message
+
 ```
 Usage: dbio [options] [command]
 
