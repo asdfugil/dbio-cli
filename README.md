@@ -7,7 +7,7 @@
 - [Commands](#Commands)
   - [details](#details)
   - [search](#search)
-  - [topUpvoted](#topUpvoted)
+  - [topLikes](#topLikes)
   - [version](#version)
   - [help](#help)
 
@@ -90,9 +90,9 @@ Search for profiles, sorted by upvotes
 └──────────────────────┴────────────┴──────────────────────┴──────────┴───────┴─────────┘
 ```
 
-### topUpvoted
+### topLikes
 
-Show the most upvoted user, sorted by upvotes.
+Show the most liked user, sorted by upvotes.
 
 ```
 ┌─────────────────────────────────────────┬──────────────┬──────────────────────┬──────────┬───────┬─────────┐
