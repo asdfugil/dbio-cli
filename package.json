@@ -1,9 +1,10 @@
 {
   "name": "dbio-cli",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "CLi wrapper of discord.bio,which is a wrapper of discord.bio api",
   "scripts": {
     "build": "pkg package.json --out-path bin --no-bytecode --public --public-packages '*' --targets node12-win-x64,node12-macos-x64,node12-linux-x64,node12.2.0-linux-armv7,node12-alpine-x64,node12-win-x86",
+    "build-freebsd": "pkg package.json --out-path bin --no-bytecode --public --public-packages '*' --targets node12-freebsd-x64",
     "prepare": "tsc",
     "test": "dist/cli.js details nickchan & dist/cli.js search nickchan & dist/cli.js topLikes & dist/cli.js version"
   },
@@ -15,7 +16,7 @@
   "dependencies": {
     "@types/node": "^14.0.14",
     "colors": "^1.4.0",
-    "discord.bio": "^6.3.1"
+    "discord.bio": "^6.3.2"
   },
   "devDependencies": {
     "pkg": "^4.4.9",
