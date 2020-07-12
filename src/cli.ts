@@ -22,4 +22,8 @@ program
   .command('totalUsers')
   .description('Display approximate discord.bio user count')
   .action(require("./commands/totalUsers"))
+program
+  .command('tui')
+  .description('Start a text user interface')
+  .action(function () { require('./tui') })
 program.parse(process.argv)
