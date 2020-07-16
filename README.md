@@ -23,6 +23,10 @@ Or, if you don't have npm installed:
 
 Download binaries from the [github release page](https://github.com/Assfugil/dbio-cli/releases) .
 
+> architectures: x86,x64,armv7,ppc64
+> 
+> Operation systems: windows,macos,linux,alpine
+
 ## Command line help message
 
 ```
