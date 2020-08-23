@@ -60,28 +60,22 @@ https://www.npmjs.com/package/discord.bio/
 User ID:570634232465063967
 Flags: house bravery
 Details
-┌────────────┬──────────────────────────────────────────────────┐
-│  (index)   │                      value                       │
-├────────────┼──────────────────────────────────────────────────┤
-│  location  │                   'Hong Kong'                    │
-│   gender   │                      'male'                      │
-│   email    │ 't.o.w.i.n.ch.e.n.mi+f92op2m6vla@googlemail.com' │
-│ createdAt  │             2020-02-21T02:22:06.000Z             │
-│ occupation │                '[object Object]'                 │
-└────────────┴──────────────────────────────────────────────────┘
-Discord Connections
-┌─────────┐
-│ (index) │
-├─────────┤
-└─────────┘
-User Connections
+┌────────────┬──────────────────────────┐
+│  (index)   │          value           │
+├────────────┼──────────────────────────┤
+│  location  │       'Hong Kong'        │
+│   gender   │          'male'          │
+│   email    │ 'towinchenmi@gmail.com'  │
+│ createdAt  │ 2020-02-21T02:22:06.000Z │
+│ occupation │    '[object Object]'     │
+└────────────┴──────────────────────────┘
+Connections
 ┌─────────┬──────────────────────────────┐
 │ (index) │            value             │
 ├─────────┼──────────────────────────────┤
 │ github  │          'Assfugil'          │
 │ website │ 'https://Assfugil.github.io' │
 └─────────┴──────────────────────────────┘
-
 
 ```
 
