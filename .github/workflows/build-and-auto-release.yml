@@ -35,7 +35,7 @@ jobs:
         wait
         # Build
         # Windows 7 binaries
-        npx pkg package.json --no-bytecode --public --public-packages '*' --targets node14.4.0-freebsd-x64,node12.18.1-alpine-ppc64,node14.4.0-linux-arm64,node14.4.0-linux-armv6,node12.18.1-linux-armv7,node12.2.0-alpine-arm64,node12.18.1-linux-armv6,node14-macos-x64,node14-linux-x64,node12-win-x64,node12-win-x86 --out-path bin/
+        npx pkg package.json --debug --no-bytecode --public --public-packages '*' --targets node14.4.0-freebsd-x64,node12.18.1-alpine-ppc64,node14.4.0-linux-arm64,node14.4.0-linux-armv6,node12.18.1-linux-armv7,node12.2.0-alpine-arm64,node12.18.1-linux-armv6,node14-macos-x64,node14-linux-x64,node12-win-x64,node12-win-x86 --out-path bin/
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUBTOKEN }}"
