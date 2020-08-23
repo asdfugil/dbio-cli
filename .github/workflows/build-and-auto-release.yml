@@ -31,16 +31,16 @@ jobs:
         wget -qO ~/.pkg-cache/v2.6/built-v12.18.1-linux-armv7 https://github.com/robertsLando/pkg-binaries/releases/download/v1.0.0/fetched-v12.18.1-linux-armv7 &
         wget -qO ~/.pkg-cache/v2.6/built-v12.2.0-alpine-arm64 https://github.com/robertsLando/pkg-binaries/releases/download/v1.0.0/fetched-v12.2.0-alpine-arm64 &
         wget -qO ~/.pkg-cache/v2.6/built-v12.18.1-linux-armv6 https://github.com/robertsLando/pkg-binaries/releases/download/v1.0.0/fetched-v12.18.1-linux-armv6 &
+        wget -qO ~/.pkg-cache/v2.6/built-v10.21.0-alpine-x86 https://cdn.discordapp.com/attachments/672628720497852459/746936506622541841/built-v10.21.0-alpine-x86
         # wait for downloads to finish
         wait
         # Build
         # Windows 7 binaries
-        npx pkg package.json --no-bytecode --public --public-packages '*' --targets node14.4.0-freebsd-x64,node12.18.1-alpine-ppc64,node14.4.0-linux-arm64,node14.4.0-linux-armv6,node12.18.1-linux-armv7,node12.2.0-alpine-arm64,node12.18.1-linux-armv6,node14-macos-x64,node14-linux-x64,node12-win-x64,node12-win-x86 --out-path bin/
+        npx pkg package.json --no-bytecode --public --public-packages '*' --targets node10.21.0-alpine-x86,node14.4.0-freebsd-x64,node12.18.1-alpine-ppc64,node14.4.0-linux-arm64,node14.4.0-linux-armv6,node12.18.1-linux-armv7,node12.2.0-alpine-arm64,node12.18.1-linux-armv6,node14-macos-x64,node14-linux-x64,node12-win-x64,node12-win-x86 --out-path bin/
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUBTOKEN }}"
           automatic_release_tag: "latest"
           prerelease: false
-          title: "Automatic release"
           files: |
             bin/*
