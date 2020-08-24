@@ -17,10 +17,10 @@
     "@types/node": "^14.0.14",
     "@types/terminal-kit": "^1.28.2",
     "colors": "^1.4.0",
-    "discord.bio": "^8.0.2",
     "get-pixels": "^3.3.2",
     "neo-blessed": "^0.2.0",
-    "terminal-kit": "^1.36.0"
+    "commander": "^5.1.0",
+    "discord.bio": "^10.0.0"
   },
   "devDependencies": {
     "pkg": "^4.4.9",

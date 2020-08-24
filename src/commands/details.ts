@@ -43,23 +43,16 @@ async function details (slug:string):Promise<void> {
         if (details[key] as string | null| boolean) data[key] = { value: details[key] as string | null }
     }
     console.table(data)
-    const dconnections_data:{[key:string]:any} = {}
-    for (const connection of discordConnections) {
-        dconnections_data[connection.name] = {
-            'Connection type':connection.connection_type,
-            'URL':connection.url,
-            'icon':connection.icon
-        }
-    }
-    console.log(bold('Discord Connections'))
-    console.table(dconnections_data)
-    let uConnections_data:{[key in ConnectionTypes]?:{value:string}} = {}
+    let connections_data:{[key in string]?:{value:string}} = {}
+    for (const [_,connection] of discordConnections) {
+      if (connection) connections_data[connection.type] = { value:connection.name }
+  }
     for (const [key,value] of Object.entries(userConnections)) {
-        if (value) uConnections_data[key as ConnectionTypes] = { value:value }
+      if (value) connections_data[key as ConnectionTypes] = { value:value }
     }
-    if (uConnections_data) {
-    console.log(bold('User Connections'))
-    console.table(uConnections_data) 
+    if (connections_data) {
+    console.log(bold('Connections'))
+    console.table(connections_data) 
     }
 }
 export = details

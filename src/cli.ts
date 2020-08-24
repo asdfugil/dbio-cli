@@ -15,10 +15,6 @@ program
   .description('Show the most upvoted profiles, sorted by upvotes')
   .action(require('./commands/topLikes'));
 program
-  .command('version')
-  .description('Displays the API version')
-  .action(require('./commands/version'))
-program
   .command('totalUsers')
   .description('Display approximate discord.bio user count')
   .action(require("./commands/totalUsers"))

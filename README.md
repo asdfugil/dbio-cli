@@ -9,7 +9,6 @@
   - [search](#search)
   - [topLikes](#topLikes)
   - [totalUsers](#totalUsers)
-  - [version](#version)
   - [help](#help)
 
 ## Installing
@@ -26,8 +25,6 @@ Download binaries from the [github release page](https://github.com/Assfugil/dbi
 ## Command line help message
 
 ```
-Usage: dbio [options] [command]
-
 Options:
   -V, --version              output the version number
   -h, --help                 display help for command
@@ -36,7 +33,6 @@ Commands:
   details <slug_or_user_id>  Display user details
   search <query>             Search for profiles, sorted by upvotes
   topLikes                   Show the most upvoted profiles, sorted by upvotes
-  version                    Displays the API version
   totalUsers                 Display approximate discord.bio user count
   help [command]             display help for command
 ```
@@ -56,28 +52,22 @@ https://www.npmjs.com/package/discord.bio/
 User ID:570634232465063967
 Flags: house bravery
 Details
-┌────────────┬──────────────────────────────────────────────────┐
-│  (index)   │                      value                       │
-├────────────┼──────────────────────────────────────────────────┤
-│  location  │                   'Hong Kong'                    │
-│   gender   │                      'male'                      │
-│   email    │ 't.o.w.i.n.ch.e.n.mi+f92op2m6vla@googlemail.com' │
-│ createdAt  │             2020-02-21T02:22:06.000Z             │
-│ occupation │                '[object Object]'                 │
-└────────────┴──────────────────────────────────────────────────┘
-Discord Connections
-┌─────────┐
-│ (index) │
-├─────────┤
-└─────────┘
-User Connections
+┌────────────┬──────────────────────────┐
+│  (index)   │          value           │
+├────────────┼──────────────────────────┤
+│  location  │       'Hong Kong'        │
+│   gender   │          'male'          │
+│   email    │ 'towinchenmi@gmail.com'  │
+│ createdAt  │ 2020-02-21T02:22:06.000Z │
+│ occupation │    '[object Object]'     │
+└────────────┴──────────────────────────┘
+Connections
 ┌─────────┬──────────────────────────────┐
 │ (index) │            value             │
 ├─────────┼──────────────────────────────┤
 │ github  │          'Assfugil'          │
 │ website │ 'https://Assfugil.github.io' │
 └─────────┴──────────────────────────────┘
-
 
 ```
 
@@ -136,14 +126,6 @@ Showing page 1 of 560
 │      GrifGrif#0001 (❤️ 17 likes)      │ 'grifgrif'  │ '401430491481374720' │   true   │ false │  true   │
 │       Darky#0001 (❤️ 17 likes)        │   'darky'   │ '336584648518008832' │  false   │ false │  false  │
 └───────────────────────────────────────┴─────────────┴──────────────────────┴──────────┴───────┴─────────┘
-```
-### version
-Shows the API version.
-
-Example: `dbio version` outputs
-
-```
-1.0.3
 ```
 
 ### totalUsers

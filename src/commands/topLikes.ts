@@ -10,7 +10,7 @@ async function topUpvoted(): Promise<void> {
             'User ID':result.discord.id,
             //'Description':result.user.description || 'No description.',
             'Verified':result.user.verified,
-            'Staff':result.user.staff,
+            'Staff':result.user.staff || false,
             'Premium':result.user.premium,
         }
     })
