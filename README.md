@@ -26,8 +26,6 @@ Download binaries from the [github release page](https://github.com/Assfugil/dbi
 ## Command line help message
 
 ```
-Usage: dbio [options] [command]
-
 Options:
   -V, --version              output the version number
   -h, --help                 display help for command
@@ -36,7 +34,6 @@ Commands:
   details <slug_or_user_id>  Display user details
   search <query>             Search for profiles, sorted by upvotes
   topLikes                   Show the most upvoted profiles, sorted by upvotes
-  version                    Displays the API version
   totalUsers                 Display approximate discord.bio user count
   help [command]             display help for command
 ```
@@ -130,14 +127,6 @@ Showing page 1 of 560
 │      GrifGrif#0001 (❤️ 17 likes)      │ 'grifgrif'  │ '401430491481374720' │   true   │ false │  true   │
 │       Darky#0001 (❤️ 17 likes)        │   'darky'   │ '336584648518008832' │  false   │ false │  false  │
 └───────────────────────────────────────┴─────────────┴──────────────────────┴──────────┴───────┴─────────┘
-```
-### version
-Shows the API version.
-
-Example: `dbio version` outputs
-
-```
-1.0.3
 ```
 
 ### totalUsers
