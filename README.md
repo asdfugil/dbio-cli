@@ -9,7 +9,6 @@
   - [search](#search)
   - [topLikes](#topLikes)
   - [totalUsers](#totalUsers)
-  - [version](#version)
   - [help](#help)
 
 ## Installing
