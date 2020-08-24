@@ -1,7 +1,8 @@
 /// <reference path="../../neo-blessed.d.ts" />
-import blessed from 'neo-blessed'
+import blessed, { box } from 'neo-blessed'
 import { Bio } from 'discord.bio'
 const bio = new Bio({ ws: { autoConnect:true } })
+import fetch from 'node-fetch'
 const screen  = blessed.screen({ 
   smartCSR:true 
 
@@ -54,7 +55,30 @@ list.on('select',(element,option) => {
         screen.render()
         const slug = value.replace(' ','')
         const profile = await bio.users.details(slug)
-        const tag = blessed.text({ content:profile.discord.tag })
+        const imgURL = profile.discord.displayAvatarURL({ dynamic:false,size:64 })
+        const img = await fetch(imgURL).then(res => res.body)
+        const avatarBox = blessed.box({
+          top:'5%',
+          left:'1%',
+          width:40,
+          height:40,
+          border:'line'
+        })
+        //@ts-ignore
+        const image = blessed.image({
+          parent:avatarBox,
+          type:'overlay'
+        })
+        image.setImage(img,console.error)
+        avatarBox.append(image)
+        const tag = blessed.text({ 
+          content:profile.discord.tag,
+          left:'70%',
+          height:'70%'
+        })
+        screen.append(tag)
+        screen.append(avatarBox)
+        screen.render()
       })
       screen.append(prompt)
       screen.render()

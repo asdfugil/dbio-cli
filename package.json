@@ -14,13 +14,17 @@
     "dbio": "dist/cli.js"
   },
   "dependencies": {
+    "@types/blessed": "^0.1.17",
     "@types/node": "^14.0.14",
+    "@types/node-fetch": "^2.5.7",
     "@types/terminal-kit": "^1.28.2",
     "colors": "^1.4.0",
+    "commander": "^5.1.0",
+    "copy-to-clipboard": "^3.3.1",
+    "discord.bio": "^10.0.0",
     "get-pixels": "^3.3.2",
     "neo-blessed": "^0.2.0",
-    "commander": "^5.1.0",
-    "discord.bio": "^10.0.0"
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "pkg": "^4.4.9",
