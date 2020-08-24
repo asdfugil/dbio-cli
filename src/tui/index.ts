@@ -1,5 +1,7 @@
 /// <reference path="../../neo-blessed.d.ts" />
 import blessed from 'neo-blessed'
+import { Bio } from 'discord.bio'
+const bio = new Bio({ ws: { autoConnect:true } })
 const screen  = blessed.screen({ 
   smartCSR:true 
 
@@ -45,11 +47,15 @@ list.on('select',(element,option) => {
         fg:'black',
         tags:true
       })
-      prompt.readInput('Enter slug or user id','',(error,value) => {
-
+      prompt.enableInput()
+      prompt.input('Enter slug or user id','',async (error,value) => {
+        screen.remove(prompt)
+        prompt.destroy()
+        screen.render()
+        const slug = value.replace(' ','')
+        const profile = await bio.users.details(slug)
+        const tag = blessed.text({ content:profile.discord.tag })
       })
-      prompt.focus()
-      prompt.show()
       screen.append(prompt)
       screen.render()
     };break
