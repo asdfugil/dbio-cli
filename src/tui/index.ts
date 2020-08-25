@@ -57,6 +57,8 @@ list.on('select',(element,option) => {
         const profile = await bio.users.details(slug)
         const imgURL = profile.discord.displayAvatarURL({ dynamic:false,size:64 })
         const img = await fetch(imgURL).then(res => res.body)
+        const chunkArray:Buffer[] = [] 
+        img.on('data',chunk => chunkArray.push(chunk))
         const avatarBox = blessed.box({
           top:'5%',
           left:'1%',
@@ -64,12 +66,15 @@ list.on('select',(element,option) => {
           height:40,
           border:'line'
         })
+        try {
+        img.once('end',() => {
+          const imgBuffer = Buffer.concat(chunkArray)
         //@ts-ignore
         const image = blessed.image({
           parent:avatarBox,
           type:'overlay'
         })
-        image.setImage(img,console.error)
+        image.setImage(imgBuffer,console.error)
         avatarBox.append(image)
         const tag = blessed.text({ 
           content:profile.discord.tag,
@@ -79,6 +84,11 @@ list.on('select',(element,option) => {
         screen.append(tag)
         screen.append(avatarBox)
         screen.render()
+        console.log('hi')
+        })
+      } catch (error) {
+        console.log(error)
+      }
       })
       screen.append(prompt)
       screen.render()
@@ -89,5 +99,8 @@ list.on('select',(element,option) => {
 })
 screen.append(list)
 screen.append(about)
+screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+  return process.exit(0);
+});
 list.focus()
 screen.render()
