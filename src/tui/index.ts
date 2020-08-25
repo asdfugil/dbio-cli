@@ -1,6 +1,6 @@
-/// <reference path="../../neo-blessed.d.ts" />
 import blessed, { box } from 'neo-blessed'
 import { Bio } from 'discord.bio'
+import asciify from 'asciify-image'
 const bio = new Bio({ ws: { autoConnect:true } })
 import fetch from 'node-fetch'
 const screen  = blessed.screen({ 

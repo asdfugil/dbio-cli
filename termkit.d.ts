@@ -1,1 +1,0 @@
-declare module 'terminal-kit/lib/termkit' 

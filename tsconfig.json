@@ -15,6 +15,6 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src/", "termkit.d.ts",
+    "src/"
   ]
 } 

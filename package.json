@@ -18,6 +18,7 @@
     "@types/node": "^14.0.14",
     "@types/node-fetch": "^2.5.7",
     "@types/terminal-kit": "^1.28.2",
+    "asciify-image": "^0.1.6",
     "colors": "^1.4.0",
     "commander": "^5.1.0",
     "copy-to-clipboard": "^3.3.1",
