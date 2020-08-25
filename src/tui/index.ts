@@ -55,7 +55,7 @@ list.on('select',(element,option) => {
         screen.render()
         const slug = value.replace(' ','')
         const profile = await bio.users.details(slug)
-        const imgURL = profile.discord.displayAvatarURL({ dynamic:false,size:64 })
+        const imgURL = profile.discord.displayAvatarURL({ dynamic:false,size:64,format:'png' })
         const img = await fetch(imgURL).then(res => res.body)
         const chunkArray:Buffer[] = [] 
         img.on('data',chunk => chunkArray.push(chunk))
@@ -72,19 +72,23 @@ list.on('select',(element,option) => {
         //@ts-ignore
         const image = blessed.image({
           parent:avatarBox,
-          type:'overlay'
+          type:'overlay',
+          top: 0,
+          left: 0,
+          width: 'shrink',
+          height: 'shrink',
         })
         image.setImage(imgBuffer,console.error)
         avatarBox.append(image)
         const tag = blessed.text({ 
           content:profile.discord.tag,
           left:'70%',
-          height:'70%'
+          width: 'shrink',
+          height: 'shrink'
         })
         screen.append(tag)
         screen.append(avatarBox)
         screen.render()
-        console.log('hi')
         })
       } catch (error) {
         console.log(error)
