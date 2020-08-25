@@ -7,6 +7,6 @@ declare module 'asciify-image' {
     format: string
     c_ratio: number
   }
-  function asciify(path: string,options:Partial<AsciifyOptions>,callback:(err:Error,asciiffied:string) => void): Promise<string>
+  function asciify(path: string,options?:Partial<AsciifyOptions>,callback?:(err:Error,asciiffied:string) => void): Promise<string>
   export default asciify
 }
