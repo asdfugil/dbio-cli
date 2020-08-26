@@ -85,30 +85,54 @@ list.on('select', (element, option) => {
         }).then(asciified => {
           const avatarASCII = blessed.text({ parent:avatarBox,content:asciified })
           const tag = blessed.text({
-            content: profile.discord.tag,
+            content: bold(profile.discord.tag),
             color:'#00ff00',
-            left: '70%',
-            top:'10%',
+            left: '65%',
+            top:'5%',
             width: 'shrink',
             height: 'shrink'
           })
+          const info:['location','gender','birthday','email','createdAt','occupation','verified','staff']  = ['location','gender','birthday','email','createdAt','occupation','verified','staff']
+          const detailsText = []
+          for (const key of info) { 
+            if (profile.user.details[key] !== null && typeof profile.user.details[key] !== 'undefined') {
+              detailsText.push(`${bold(key + ":")} ${profile.user.details[key] }`)
+            }
+          } 
+          const presence = blessed.text({
+            border:'line',
+            left:'70%',
+            top:'10%',
+            width: 'shrink',
+            height: '25%',
+            content:'',
+          })
+          profile.on('presenceUpdate',(_,pres) => {
+            if (pres.activity) {
+              const typeName = pres.activity.type.replace('_',' ').toLowerCase()
+              presence.setContent(`${bold(typeName)}\n${pres.activity.type === 'CUSTOM_STATUS' ? pres.activity.state : pres.activity.name}`)
+            } else presence.hide()
+            screen.append(presence)
+            screen.render()
+          })
+          screen.append(presence)
           const details = blessed.text({
             border:'line',
-            left:'60%',
-            top:'20%',
+            left:'70%',
+            top:'40%',
             width: 'shrink',
             height: 'shrink',
-            content: `
-            ${bold("User ID:")} ${profile.discord.id}
-
+            content: `${profile.user.details.description}
             
-            `
+
+${bold("User ID:")} ${profile.discord.id}
+` + detailsText.join('\n')
           })
           screen.append(details)
           const view_count = blessed.text({
             content: `0 views`,
-            left: '90%',
-            top:'13%',
+            left: '95%',
+            top:'5%',
             width: 'shrink',
             height: 'shrink',
             hidden: false,
@@ -120,8 +144,8 @@ list.on('select', (element, option) => {
           })
           const like_count = blessed.text({
             content: `${profile.user.details.likes} likes`,
-            left: '90%',
-            top:'15%',
+            left: '87%',
+            top:'5%',
             width: 'shrink',
             height: 'shrink'
           })
