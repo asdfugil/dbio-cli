@@ -52,6 +52,13 @@ list.on('select', (element, option) => {
       })
       prompt.enableInput()
       prompt.input('Enter slug or user id', '', async (error, value) => {
+        if (error) {
+          prompt.destroy()
+          list.show()
+          about.show()
+          screen.render()
+          return
+        }
         screen.remove(prompt)
         prompt.destroy()
         const loading = blessed.loading({
@@ -72,16 +79,17 @@ list.on('select', (element, option) => {
         const avatarBox = blessed.box({
           top: '5%',
           left: '1%',
-          width: 82,
-          height: 42,
-          border: 'line'
+          width: screen.width as number * 0.5 + 2,
+          height: screen.height as number * 0.9 + 2,
+          draggable:true,
+          scrollable:true
         })
         loading.load('Downloading avatar...')
         screen.render()
         asciify(imgURL,{
           fit: 'box',
-          width:80,
-          height:40
+          width:screen.width as number * 0.5,
+          height:screen.height as number * 0.9
         }).then(asciified => {
           const avatarASCII = blessed.text({ parent:avatarBox,content:asciified })
           const tag = blessed.text({
@@ -100,12 +108,13 @@ list.on('select', (element, option) => {
             }
           } 
           const presence = blessed.text({
-            border:'line',
             left:'70%',
             top:'10%',
             width: 'shrink',
             height: '25%',
             content:'',
+            draggable:true,
+            scrollable:true,
           })
           profile.on('presenceUpdate',(_,pres) => {
             if (pres.activity) {
@@ -126,7 +135,9 @@ list.on('select', (element, option) => {
             
 
 ${bold("User ID:")} ${profile.discord.id}
-` + detailsText.join('\n')
+` + detailsText.join('\n'),
+draggable:true,
+scrollable:true
           })
           screen.append(details)
           const view_count = blessed.text({
