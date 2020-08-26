@@ -1,8 +1,10 @@
 import blessed, { box } from 'neo-blessed'
 import { Bio } from 'discord.bio'
 import asciify from 'asciify-image'
-const bio = new Bio({ ws: { autoConnect: true } })
+const bio = new Bio({ ws: { autoConnect: false } })
 import fetch from 'node-fetch'
+import colors, { bold } from 'colors'
+import copy from 'copy-to-clipboard'
 const screen = blessed.screen({
   smartCSR: true
 
@@ -52,32 +54,87 @@ list.on('select', (element, option) => {
       prompt.input('Enter slug or user id', '', async (error, value) => {
         screen.remove(prompt)
         prompt.destroy()
+        const loading = blessed.loading({
+          width:'90%',
+          height:1,
+          top:1,
+          left:1
+        })
+        screen.append(loading)
+        loading.load('Loading profile...')
         screen.render()
         const slug = value.replace(' ', '')
         const profile = await bio.users.details(slug)
+        loading.load('Connecting to websocket...')
+        screen.render()
+        await profile.connect()
         const imgURL = profile.discord.displayAvatarURL({ dynamic: false, size: 64, format: 'png' })
+        const avatarBox = blessed.box({
+          top: '5%',
+          left: '1%',
+          width: 82,
+          height: 42,
+          border: 'line'
+        })
+        loading.load('Downloading avatar...')
+        screen.render()
         asciify(imgURL,{
           fit: 'box',
           width:80,
           height:40
         }).then(asciified => {
-          const avatarBox = blessed.box({
-            top: '5%',
-            left: '1%',
-            width: 82,
-            height: 42,
-            border: 'line'
-          })
           const avatarASCII = blessed.text({ parent:avatarBox,content:asciified })
           const tag = blessed.text({
             content: profile.discord.tag,
+            color:'#00ff00',
             left: '70%',
+            top:'10%',
             width: 'shrink',
             height: 'shrink'
           })
+          const details = blessed.text({
+            border:'line',
+            left:'60%',
+            top:'20%',
+            width: 'shrink',
+            height: 'shrink',
+            content: `
+            ${bold("User ID:")} ${profile.discord.id}
+
+            
+            `
+          })
+          screen.append(details)
+          const view_count = blessed.text({
+            content: `0 views`,
+            left: '90%',
+            top:'13%',
+            width: 'shrink',
+            height: 'shrink',
+            hidden: false,
+          })
+          profile.on('viewCountUpdate',(_oldCount,newCount) => {
+            view_count.setContent(`${newCount} views`)
+            view_count.show()
+            screen.render()
+          })
+          const like_count = blessed.text({
+            content: `${profile.user.details.likes} likes`,
+            left: '90%',
+            top:'15%',
+            width: 'shrink',
+            height: 'shrink'
+          })
+          tag.on('click',() => {
+            copy(profile.discord.tag)
+          })
+          screen.append(view_count)
+          screen.append(like_count)
           avatarBox.append(avatarASCII)
           screen.append(tag)
           screen.append(avatarBox)
+          loading.stop()
+          loading.destroy()
           screen.render()
         })
       })
