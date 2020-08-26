@@ -75,7 +75,7 @@ list.on('select', (element, option) => {
         loading.load('Connecting to websocket...')
         screen.render()
         await profile.connect()
-        const imgURL = profile.discord.displayAvatarURL({ dynamic: false, size: 64, format: 'png' })
+        const imgURL = profile.discord.displayAvatarURL({ dynamic: false, size: 128, format: 'png' })
         const avatarBox = blessed.box({
           top: '5%',
           left: '1%',
