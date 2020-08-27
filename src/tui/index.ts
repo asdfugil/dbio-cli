@@ -101,7 +101,8 @@ list.on('select', (element, option) => {
             left: '60%',
             top:'5%',
             width: 'shrink',
-            height: 'shrink'
+            height: 'shrink',
+            draggable:true
           })
           const info:['location','gender','birthday','email','createdAt','occupation','verified','staff']  = ['location','gender','birthday','email','createdAt','occupation','verified','staff']
           const detailsText = []
@@ -134,6 +135,7 @@ list.on('select', (element, option) => {
             border:'line',
             left:'60%',
             top:'27%',
+            width:'40%',
             content: `${profile.user.details.description}
             
 
@@ -151,6 +153,7 @@ alwaysScroll:true
             width: 'shrink',
             height: 'shrink',
             hidden: false,
+            draggable:true
           })
           profile.on('viewCountUpdate',(_oldCount,newCount) => {
             view_count.setContent(`${newCount} views`)
@@ -162,10 +165,12 @@ alwaysScroll:true
             left: '80%',
             top:'5%',
             width: 'shrink',
-            height: 'shrink'
+            height: 'shrink',
+            draggable:true
           })
           tag.on('click',() => {
-            copy(profile.discord.tag)
+            return
+            copy(profile.discord.tag,{})
           })
           screen.append(view_count)
           screen.append(like_count)
