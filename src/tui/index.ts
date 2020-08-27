@@ -7,8 +7,11 @@ import colors, { bold } from 'colors'
 import copy from 'copy-to-clipboard'
 const screen = blessed.screen({
   smartCSR: true
-
 })
+if (screen.width < 80 || screen.height < 24) {
+  console.error('Error: Terminal size must be at least 80x24')
+  process.exit()
+}
 screen.title = "discord.bio"
 const about = blessed.text({
   left: '40%',
@@ -95,7 +98,7 @@ list.on('select', (element, option) => {
           const tag = blessed.text({
             content: bold(profile.discord.tag),
             color:'#00ff00',
-            left: '65%',
+            left: '60%',
             top:'5%',
             width: 'shrink',
             height: 'shrink'
@@ -108,10 +111,10 @@ list.on('select', (element, option) => {
             }
           } 
           const presence = blessed.text({
-            left:'70%',
+            left:'60%',
             top:'10%',
             width: 'shrink',
-            height: '25%',
+            height: '17%',
             content:'',
             draggable:true,
             scrollable:true,
@@ -119,30 +122,31 @@ list.on('select', (element, option) => {
           profile.on('presenceUpdate',(_,pres) => {
             if (pres.activity) {
               const typeName = pres.activity.type.replace('_',' ').toLowerCase()
-              presence.setContent(`${bold(typeName)}\n${pres.activity.type === 'CUSTOM_STATUS' ? pres.activity.state : pres.activity.name}`)
-            } else presence.hide()
+              presence.setContent(`${bold(typeName.charAt(0).toUpperCase() + typeName.slice(1))}\n${pres.activity.type === 'CUSTOM_STATUS' ? pres.activity.state : pres.activity.name}\n\nStatus: ${pres.status}`)
+            } else {
+              presence.setContent(`\n\nStatus: ${pres.status ? pres.status : 'offline'}`)
+            }
             screen.append(presence)
             screen.render()
           })
           screen.append(presence)
           const details = blessed.text({
             border:'line',
-            left:'70%',
-            top:'40%',
-            width: 'shrink',
-            height: 'shrink',
+            left:'60%',
+            top:'27%',
             content: `${profile.user.details.description}
             
 
 ${bold("User ID:")} ${profile.discord.id}
 ` + detailsText.join('\n'),
 draggable:true,
-scrollable:true
+scrollable:true,
+alwaysScroll:true
           })
           screen.append(details)
           const view_count = blessed.text({
             content: `0 views`,
-            left: '95%',
+            left: '92%',
             top:'5%',
             width: 'shrink',
             height: 'shrink',
@@ -155,7 +159,7 @@ scrollable:true
           })
           const like_count = blessed.text({
             content: `${profile.user.details.likes} likes`,
-            left: '87%',
+            left: '80%',
             top:'5%',
             width: 'shrink',
             height: 'shrink'
