@@ -65,10 +65,10 @@ list.on('select', (element, option) => {
         screen.remove(prompt)
         prompt.destroy()
         const loading = blessed.loading({
-          width:'90%',
-          height:1,
-          top:1,
-          left:1
+          width: '90%',
+          height: 1,
+          top: 1,
+          left: 1
         })
         screen.append(loading)
         loading.load('Loading profile...')
@@ -80,49 +80,69 @@ list.on('select', (element, option) => {
         await profile.connect()
         const imgURL = profile.discord.displayAvatarURL({ dynamic: false, size: 128, format: 'png' })
         const avatarBox = blessed.box({
-          top: '5%',
+          top: '20%',
+          left: '5%',
+          width: screen.width as number * 0.5 + 2,
+          height: screen.height as number * 0.8 + 2,
+          draggable: true,
+          scrollable: true
+        })
+        const bannerBox = blessed.box({
+          top: '1%',
           left: '1%',
           width: screen.width as number * 0.5 + 2,
-          height: screen.height as number * 0.9 + 2,
-          draggable:true,
-          scrollable:true
+          height: screen.height as number * 0.1 + 2,
+          draggable: true,
+          scrollable: true,
+          border:'line'
         })
         loading.load('Downloading avatar...')
         screen.render()
-        asciify(imgURL,{
-          fit: 'box',
-          width:screen.width as number * 0.5,
-          height:screen.height as number * 0.9
-        }).then(asciified => {
-          const avatarASCII = blessed.text({ parent:avatarBox,content:asciified })
+        Promise.all([
+          asciify(profile.user.details.banner || __dirname + '/assets/banner.png', {
+            fit: 'width',
+            width: screen.width as number * .5,
+            height: screen.height as number * .1
+          }),
+          asciify(imgURL, {
+            fit: 'box',
+            width: screen.width as number * 0.5,
+            height: screen.height as number * 0.8
+          })
+        ])
+          .then(([banner, asciified]) => {
+          const bannerASCII = blessed.text({ content:banner,parent:bannerBox })
+          const avatarASCII = blessed.text({ parent: avatarBox, content: asciified })
+          bannerBox.append(bannerASCII)
+          screen.append(bannerBox)
           const tag = blessed.text({
             content: bold(profile.discord.tag),
-            color:'#00ff00',
+            color: '#00ff00',
             left: '60%',
-            top:'5%',
+            top: '5%',
             width: 'shrink',
             height: 'shrink',
-            draggable:true
+            draggable: true
           })
-          const info:['location','gender','birthday','email','createdAt','occupation','verified','staff']  = ['location','gender','birthday','email','createdAt','occupation','verified','staff']
+          const info: ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff'] = ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff']
           const detailsText = []
-          for (const key of info) { 
+          for (const key of info) {
             if (profile.user.details[key] !== null && typeof profile.user.details[key] !== 'undefined') {
-              detailsText.push(`${bold(key + ":")} ${profile.user.details[key] }`)
+              detailsText.push(`${bold(key + ":")} ${profile.user.details[key]}`)
             }
-          } 
+          }
           const presence = blessed.text({
-            left:'60%',
-            top:'10%',
+            left: '60%',
+            top: '10%',
             width: 'shrink',
             height: '17%',
-            content:'',
-            draggable:true,
-            scrollable:true,
+            content: '',
+            draggable: true,
+            scrollable: true,
           })
-          profile.on('presenceUpdate',(_,pres) => {
+          profile.on('presenceUpdate', (_, pres) => {
             if (pres.activity) {
-              const typeName = pres.activity.type.replace('_',' ').toLowerCase()
+              const typeName = pres.activity.type.replace('_', ' ').toLowerCase()
               presence.setContent(`${bold(typeName.charAt(0).toUpperCase() + typeName.slice(1))}\n${pres.activity.type === 'CUSTOM_STATUS' ? pres.activity.state : pres.activity.name}\n\nStatus: ${pres.status}`)
             } else {
               presence.setContent(`\n\nStatus: ${pres.status ? pres.status : 'offline'}`)
@@ -132,30 +152,30 @@ list.on('select', (element, option) => {
           })
           screen.append(presence)
           const details = blessed.text({
-            border:'line',
-            left:'60%',
-            top:'27%',
-            width:'40%',
+            border: 'line',
+            left: '60%',
+            top: '27%',
+            width: '40%',
             content: `${profile.user.details.description}
             
 
 ${bold("User ID:")} ${profile.discord.id}
 ` + detailsText.join('\n'),
-draggable:true,
-scrollable:true,
-alwaysScroll:true
+            draggable: true,
+            scrollable: true,
+            alwaysScroll: true
           })
           screen.append(details)
           const view_count = blessed.text({
             content: `0 views`,
             left: '92%',
-            top:'5%',
+            top: '5%',
             width: 'shrink',
             height: 'shrink',
             hidden: false,
-            draggable:true
+            draggable: true
           })
-          profile.on('viewCountUpdate',(_oldCount,newCount) => {
+          profile.on('viewCountUpdate', (_oldCount, newCount) => {
             view_count.setContent(`${newCount} views`)
             view_count.show()
             screen.render()
@@ -163,14 +183,14 @@ alwaysScroll:true
           const like_count = blessed.text({
             content: `${profile.user.details.likes} likes`,
             left: '80%',
-            top:'5%',
+            top: '5%',
             width: 'shrink',
             height: 'shrink',
-            draggable:true
+            draggable: true
           })
-          tag.on('click',() => {
+          tag.on('click', () => {
             return
-            copy(profile.discord.tag,{})
+            copy(profile.discord.tag, {})
           })
           screen.append(view_count)
           screen.append(like_count)
@@ -181,9 +201,9 @@ alwaysScroll:true
           loading.destroy()
           screen.render()
         })
-      })
-      screen.append(prompt)
-      screen.render()
+    })
+screen.append(prompt)
+screen.render()
     }; break
     case 3: process.exit(); break
   }
