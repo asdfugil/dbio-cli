@@ -101,7 +101,7 @@ list.on('select', (element, option) => {
         Promise.all([
           asciify(profile.user.details.banner || __dirname + '/assets/banner.png', {
             fit: 'width',
-            width: screen.width as number * .5 - 5,
+            width: screen.width as number * .5 - 12,
             height: screen.height as number * .1
           }),
           asciify(imgURL, {
