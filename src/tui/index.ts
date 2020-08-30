@@ -115,7 +115,6 @@ list.on('select', (element, option) => {
           },
           hidden:false
         })
-        screen.append(button)
         Promise.all([
           asciify(profile.user.details.banner || __dirname + '/assets/banner.png', {
             fit: 'width',
@@ -216,7 +215,17 @@ ${bold("User ID:")} ${profile.discord.id}
           avatarBox.append(avatarASCII)
           screen.append(tag)
           screen.append(avatarBox)
+          screen.append(button)
           button.focus()
+          button.once('press',() => {
+            [like_count,tag,view_count,avatarBox,bannerBox,details,presence,button].forEach(element => {
+              element.destroy()
+            })
+            list.show()
+            about.show()
+            list.enableKeys()
+            screen.render()
+          })
           loading.stop()
           loading.destroy()
           screen.render()

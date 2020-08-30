@@ -30,5 +30,10 @@
     "typescript": "^3.9.6"
   },
   "repository": "https://github.com/Assfugil/dbio-cli",
-  "pkg":{ "assets":[ "dist/tui/assets/*" ] }
+  "pkg": {
+    "assets": [
+      "dist/tui/assets/*",
+      "node_modules/neo-blessed"
+    ]
+  }
 }

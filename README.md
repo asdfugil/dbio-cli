@@ -21,7 +21,14 @@ npm i -g dbio-cli
 Or, if you don't have npm installed:
 
 Download binaries from the [github release page](https://github.com/Assfugil/dbio-cli/releases/tag/latest) .
-
+## Features
+- View profiles
+- Render images in form of ASCII art
+- Automatically update content using websocket
+- View top profiles
+- Search profile
+- Easy-to-use terminal user inferface
+- No native dependencies
 ## Command line help message
 
 ```
