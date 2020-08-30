@@ -5,7 +5,7 @@
   "scripts": {
     "build": "pkg package.json --out-path bin --no-bytecode --public --public-packages '*' --targets node12-win-x64,node12-macos-x64,node12-linux-x64,node12.2.0-linux-armv7,node12-alpine-x64,node12-win-x86",
     "build-freebsd": "pkg package.json --output bin/dbio-cli-node12.16-freebsd-x64 --no-bytecode --public --public-packages '*' --targets node12.16-freebsd-x64",
-    "prepare": "tsc",
+    "prepare": "tsc && cp -fr src/tui/assets/ dist/tui/assets/",
     "test": "dist/cli.js details nickchan & dist/cli.js search nickchan & dist/cli.js topLikes & dist/cli.js version"
   },
   "author": "asdfugil",
@@ -29,5 +29,6 @@
     "pkg": "^4.4.9",
     "typescript": "^3.9.6"
   },
-  "repository": "https://github.com/Assfugil/dbio-cli"
+  "repository": "https://github.com/Assfugil/dbio-cli",
+  "pkg":{ "assets":[ "dist/tui/assets/*" ] }
 }

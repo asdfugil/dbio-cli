@@ -5,6 +5,7 @@ const bio = new Bio({ ws: { autoConnect: false } })
 import fetch from 'node-fetch'
 import colors, { bold } from 'colors'
 import copy from 'copy-to-clipboard'
+import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants'
 const screen = blessed.screen({
   smartCSR: true
 })
@@ -82,27 +83,44 @@ list.on('select', (element, option) => {
         const avatarBox = blessed.box({
           top: '20%',
           left: '5%',
-          width: screen.width as number * 0.5 + 2,
-          height: screen.height as number * 0.8 + 2,
+          width: screen.width as number * 0.5,
+          height: screen.height as number * 0.8,
           draggable: true,
           scrollable: true
         })
         const bannerBox = blessed.box({
-          top: '1%',
+          top: '0%',
           left: '1%',
-          width: screen.width as number * 0.5 + 2,
-          height: screen.height as number * 0.1 + 2,
+          width: screen.width as number * 0.5,
+          height: screen.height as number * 0.15,
           draggable: true,
           scrollable: true,
-          border:'line'
+          border:undefined
         })
         loading.load('Downloading avatar...')
         screen.render()
+        const button = blessed.button({ 
+          content:'Back',
+          width:8,
+          height:3,
+          top:'95%',
+          left:'55%',
+          border:'line',
+          style:{
+            fg:'white',
+            focus:{
+              bg:'white',
+              fg:'black'
+            }
+          },
+          hidden:false
+        })
+        screen.append(button)
         Promise.all([
           asciify(profile.user.details.banner || __dirname + '/assets/banner.png', {
             fit: 'width',
-            width: screen.width as number * .5 - 12,
-            height: screen.height as number * .1
+            width: screen.program.cols as number * 0.5,
+            height: screen.height as number * 0.15
           }),
           asciify(imgURL, {
             fit: 'box',
@@ -124,6 +142,7 @@ list.on('select', (element, option) => {
             height: 'shrink',
             draggable: true
           })
+
           const info: ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff'] = ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff']
           const detailsText = []
           for (const key of info) {
@@ -197,6 +216,7 @@ ${bold("User ID:")} ${profile.discord.id}
           avatarBox.append(avatarASCII)
           screen.append(tag)
           screen.append(avatarBox)
+          button.focus()
           loading.stop()
           loading.destroy()
           screen.render()
