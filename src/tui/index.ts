@@ -1,11 +1,10 @@
-import blessed, { box } from 'neo-blessed'
-import { Bio } from 'discord.bio'
+import blessed, { box,Widgets } from 'neo-blessed'
+import { Bio, Profile } from 'discord.bio'
 import asciify from 'asciify-image'
 const bio = new Bio({ ws: { autoConnect: false } })
 import fetch from 'node-fetch'
 import colors, { bold } from 'colors'
 import copy from 'copy-to-clipboard'
-import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants'
 const screen = blessed.screen({
   smartCSR: true
 })
@@ -15,7 +14,7 @@ if (screen.width < 80 || screen.height < 24) {
 }
 screen.title = "discord.bio"
 const about = blessed.text({
-  left: '40%',
+  left: 'center',
   top: '20%',
   content: 'discord.bio CLI by Assfugil'
 })
@@ -38,11 +37,24 @@ const list = blessed.list({
   },
   keys: true
 })
+const message = blessed.message({
+  left:'center',
+  top:'80%',
+  fg:'white',
+  width:'shrink',
+  height:3,
+  hidden:false
+})
+process.on('unhandledRejection',error => {
+   message.error((error || 'Unhandled Rejection').toString(),3000,() => {})
+})
+screen.append(message)
 list.on('select', (element, option) => {
   switch (option) {
     case 0: {
       list.hide()
       about.hide()
+      message.hide()
       const prompt = blessed.prompt({
         parent: screen,
         keys: true,
@@ -60,6 +72,7 @@ list.on('select', (element, option) => {
           prompt.destroy()
           list.show()
           about.show()
+          message.error(error.toString(),3000,() => {})
           screen.render()
           return
         }
@@ -71,11 +84,23 @@ list.on('select', (element, option) => {
           top: 1,
           left: 1
         })
+        const errorHandle = (error:Error) => {
+          message.error(error.message,3000,() => {})
+          loading.stop()
+          loading.destroy()
+          list.show()
+          about.show()
+          list.enableInput()
+          screen.render()
+        }
         screen.append(loading)
         loading.load('Loading profile...')
         screen.render()
+        if (!value) return errorHandle(new Error('No slug provided/Cancelled'))
         const slug = value.replace(' ', '')
         const profile = await bio.users.details(slug)
+        .catch(errorHandle)
+        if (!profile) return
         loading.load('Connecting to websocket...')
         screen.render()
         await profile.connect()
@@ -208,7 +233,7 @@ ${bold("User ID:")} ${profile.discord.id}
           })
           tag.on('click', () => {
             return
-            copy(profile.discord.tag, {})
+            //copy(profile.discord.tag, {})
           })
           screen.append(view_count)
           screen.append(like_count)
