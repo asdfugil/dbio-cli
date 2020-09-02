@@ -194,6 +194,13 @@ list.on('select', (element, option) => {
             screen.render()
           })
           screen.append(presence)
+          const connections = []
+          for (const [_,discordConnection] of profile.user.discordConnections) {
+            connections.push(`${bold(`${discordConnection.type}:`)} ${discordConnection.name}`)
+          }
+          for (const [userConnectionType,userConnectionValue] of Object.entries(profile.user.userConnections)) {
+            connections.push(`${bold(`${userConnectionType}:`)} ${userConnectionValue}`)
+          }
           const details = blessed.text({
             border: 'line',
             left: '60%',
@@ -203,7 +210,8 @@ list.on('select', (element, option) => {
             
 
 ${bold("User ID:")} ${profile.discord.id}
-` + detailsText.join('\n'),
+` + detailsText.join('\n') + `\n\n${bold('Connections')}\n\n` 
++ connections.join('\n'),
             draggable: true,
             scrollable: true,
             alwaysScroll: true
@@ -241,8 +249,9 @@ ${bold("User ID:")} ${profile.discord.id}
           screen.append(tag)
           screen.append(avatarBox)
           screen.append(button)
+          button.enableInput()
           button.focus()
-          button.once('press',() => {
+          const loadHome = () => {
             [like_count,tag,view_count,avatarBox,bannerBox,details,presence,button].forEach(element => {
               element.destroy()
             })
@@ -250,7 +259,9 @@ ${bold("User ID:")} ${profile.discord.id}
             about.show()
             list.enableKeys()
             screen.render()
-          })
+          }
+          button.once('press',loadHome)
+          screen.onceKey('home',loadHome)
           loading.stop()
           loading.destroy()
           screen.render()
