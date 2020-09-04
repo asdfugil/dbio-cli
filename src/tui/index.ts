@@ -211,7 +211,7 @@ list.on('select', (element, option) => {
 
 ${bold("User ID:")} ${profile.discord.id}
 ` + detailsText.join('\n') + `\n\n${bold('Connections')}\n\n` 
-+ connections.join('\n'),
++ (connections.join('\n') || 'No connections'),
             draggable: true,
             scrollable: true,
             alwaysScroll: true
