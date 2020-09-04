@@ -108,7 +108,7 @@ list.on('select', (element, option) => {
         const avatarBox = blessed.box({
           top: '20%',
           left: '5%',
-          width: screen.width as number * 0.5,
+          width: screen.height as number * 1.6,
           height: screen.height as number * 0.8,
           draggable: true,
           scrollable: true
