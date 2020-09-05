@@ -1,4 +1,4 @@
-import blessed, { box,Widgets } from 'neo-blessed'
+import blessed from 'neo-blessed'
 import { Bio, Profile } from 'discord.bio'
 import asciify from 'asciify-image'
 const bio = new Bio({ ws: { autoConnect: false } })
