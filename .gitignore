@@ -3,3 +3,5 @@ bin/
 node_modules/
 types/
 pkg-fetch/
+key.pem
+PASSPHRASE

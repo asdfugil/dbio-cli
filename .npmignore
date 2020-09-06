@@ -1,2 +1,4 @@
 bin/
 pkg-fetch/
+key.pem
+PASSPHRASE
