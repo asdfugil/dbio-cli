@@ -42,11 +42,14 @@ const message = blessed.message({
   top:'80%',
   fg:'white',
   width:'shrink',
-  height:3,
+  height:32767,
   hidden:false
 })
 process.on('unhandledRejection',error => {
-   message.error((error || 'Unhandled Rejection').toString(),3000,() => {})
+  message.error((error || 'Unhandled Rejection').toString(),3000,() => {})
+})
+process.on('uncaughtException',(error) => {
+  message.error((error.stack || 'Uncaught Exception').toString(),3000,() => {})
 })
 screen.append(message)
 list.on('select', (element, option) => {

@@ -18,7 +18,13 @@ function loader(screen: blessed.Widgets.Screen, profiles: Collection<Snowflake, 
   Promise.all(profiles.map<Promise<[Snowflake, string]>>(async x => [x.discord.id, await asciify(x.discord.displayAvatarURL({ size: 32, dynamic: false, format: 'png' }))]))
     .then(avatarPoolArray => new Collection<Snowflake, string>(avatarPoolArray))
     .then(avatarPool => {
-
+      for (const [user_id,asciifiedAvatar] of avatarPool) {
+        const profileBox = new PartialProfileBox({ 
+          boxOptions:{
+          height:20,
+          width:60
+        },
+        profile:profiles.get(user_id) as PartialProfile,asciifiedAvatar})
+      }
     })
-
 }
