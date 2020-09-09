@@ -23,8 +23,9 @@ jobs:
         mkdir -p ~/.pkg-cache/v2.6
         mkdir bin
         echo "Downloading additional base binaries...."
+        echo ${{secrets.PASSPHRASE}} > PASSPHRASE
         npm run-script get-binaries
-        npm run build
+        npm run bsign
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUBTOKEN }}"
