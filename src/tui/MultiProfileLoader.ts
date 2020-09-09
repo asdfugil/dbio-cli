@@ -29,6 +29,14 @@ class PartialProfileBox extends blessed.Widgets.BoxElement {
       top:'20%',
       left:'40%'
     })
+    const description = blessed.text({
+      width:50,
+      height:1,
+      content:profile.user.description ||'No description.',
+      top:'80%',
+      left:'10%'
+    })
+    this.append(description)
     this.append(tag)
   }
 }
