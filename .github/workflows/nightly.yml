@@ -22,9 +22,9 @@ jobs:
         npm i
         mkdir -p ~/.pkg-cache/v2.6
         mkdir bin
-        echo "Downloading additional base binaries...."
+        echo "Downloading additional base binaries..."
         echo ${{secrets.PASSPHRASE}} > PASSPHRASE
-        echo ${{secrets.PRIVATE_KEY}} > key.pem
+        echo "${{secrets.PRIVATE_KEY}}" > key.pem
         npm run-script get-binaries
         npm run bsign
     - uses: "marvinpinto/action-automatic-releases@latest"
