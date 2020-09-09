@@ -18,6 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build and auto release
       run: |
+        sudo apt-get install osslsigncode -y
         npm i
         mkdir -p ~/.pkg-cache/v2.6
         mkdir bin
