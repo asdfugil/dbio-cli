@@ -19,6 +19,7 @@ jobs:
     - name: Build and auto release
       run: |
         sudo apt-get install osslsigncode -y
+        git checkout -f develop
         npm i
         mkdir -p ~/.pkg-cache/v2.6
         mkdir bin
