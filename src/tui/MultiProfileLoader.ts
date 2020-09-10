@@ -4,7 +4,10 @@ import { PartialProfile } from 'discord.bio'
 import { Collection, Snowflake } from 'discord.js'
 import asciify from 'asciify-image'
 import { bold } from 'colors'
-class PartialProfileBox extends blessed.Widgets.BoxElement {
+declare var BoxElement:blessed.Widgets.BoxElement
+
+import BoxElement from "neo-blessed/lib/widgets/box.js"
+class PartialProfileBox extends BoxElement {
   constructor({ boxOptions,
     profile,
     asciifiedAvatar }: {
@@ -59,9 +62,11 @@ function loader(screen: blessed.Widgets.Screen, profiles: Collection<Snowflake, 
         scrollbar:{
           style:{
             fg:'white',
-            ch:'|'
-          }
-        }
+            ch:'█'
+          },
+        },
+        width:screen.width as number,
+        height:screen.height as number* .9
       })
       for (const [user_id, asciifiedAvatar] of avatarPool) {
         const profileBox = new PartialProfileBox({
@@ -71,6 +76,8 @@ function loader(screen: blessed.Widgets.Screen, profiles: Collection<Snowflake, 
           },
           profile: profiles.get(user_id) as PartialProfile, asciifiedAvatar
         })
+        profilesHolder.append(profileBox)
+        screen.append(profilesHolder)
       }
     })
 }

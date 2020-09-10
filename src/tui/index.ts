@@ -5,6 +5,7 @@ const bio = new Bio({ ws: { autoConnect: false } })
 import fetch from 'node-fetch'
 import colors, { bold } from 'colors'
 import copy from 'copy-to-clipboard'
+import { loader } from './MultiProfileLoader'
 const screen = blessed.screen({
   smartCSR: true
 })
@@ -38,18 +39,18 @@ const list = blessed.list({
   keys: true
 })
 const message = blessed.message({
-  left:'center',
-  top:'80%',
-  fg:'white',
-  width:'shrink',
-  height:32767,
-  hidden:false
+  left: 'center',
+  top: '80%',
+  fg: 'white',
+  width: 'shrink',
+  height: 32767,
+  hidden: false
 })
-process.on('unhandledRejection',error => {
-  message.error((error || 'Unhandled Rejection').toString(),3000,() => {})
+process.on('unhandledRejection', error => {
+  message.error((error || 'Unhandled Rejection').toString(), 3000, () => { })
 })
-process.on('uncaughtException',(error) => {
-  message.error((error.stack || 'Uncaught Exception').toString(),3000,() => {})
+process.on('uncaughtException', (error) => {
+  message.error((error.stack || 'Uncaught Exception').toString(), 3000, () => { })
 })
 screen.append(message)
 list.on('select', (element, option) => {
@@ -75,7 +76,7 @@ list.on('select', (element, option) => {
           prompt.destroy()
           list.show()
           about.show()
-          message.error(error.toString(),3000,() => {})
+          message.error(error.toString(), 3000, () => { })
           screen.render()
           return
         }
@@ -87,8 +88,8 @@ list.on('select', (element, option) => {
           top: 1,
           left: 1
         })
-        const errorHandle = (error:Error) => {
-          message.error(error.message,3000,() => {})
+        const errorHandle = (error: Error) => {
+          message.error(error.message, 3000, () => { })
           loading.stop()
           loading.destroy()
           list.show()
@@ -102,7 +103,7 @@ list.on('select', (element, option) => {
         if (!value) return errorHandle(new Error('No slug provided/Cancelled'))
         const slug = value.replace(' ', '')
         const profile = await bio.users.details(slug)
-        .catch(errorHandle)
+          .catch(errorHandle)
         if (!profile) return
         loading.load('Connecting to websocket...')
         screen.render()
@@ -123,25 +124,25 @@ list.on('select', (element, option) => {
           height: screen.height as number * 0.15,
           draggable: true,
           scrollable: true,
-          border:undefined
+          border: undefined
         })
         loading.load('Downloading avatar...')
         screen.render()
-        const button = blessed.button({ 
-          content:'Back',
-          width:8,
-          height:3,
-          top:'95%',
-          left:'55%',
-          border:'line',
-          style:{
-            fg:'white',
-            focus:{
-              bg:'white',
-              fg:'black'
+        const button = blessed.button({
+          content: 'Back',
+          width: 8,
+          height: 3,
+          top: '95%',
+          left: '55%',
+          border: 'line',
+          style: {
+            fg: 'white',
+            focus: {
+              bg: 'white',
+              fg: 'black'
             }
           },
-          hidden:false
+          hidden: false
         })
         Promise.all([
           asciify(profile.user.details.banner || __dirname + '/assets/banner.png', {
@@ -156,122 +157,129 @@ list.on('select', (element, option) => {
           })
         ])
           .then(([banner, asciified]) => {
-          const bannerASCII = blessed.text({ content:banner,parent:bannerBox })
-          const avatarASCII = blessed.text({ parent: avatarBox, content: asciified })
-          bannerBox.append(bannerASCII)
-          screen.append(bannerBox)
-          const tag = blessed.text({
-            content: bold(profile.discord.tag),
-            color: '#00ff00',
-            left: '60%',
-            top: '5%',
-            width: 'shrink',
-            height: 'shrink',
-            draggable: true
-          })
+            const bannerASCII = blessed.text({ content: banner, parent: bannerBox })
+            const avatarASCII = blessed.text({ parent: avatarBox, content: asciified })
+            bannerBox.append(bannerASCII)
+            screen.append(bannerBox)
+            const tag = blessed.text({
+              content: bold(profile.discord.tag),
+              color: '#00ff00',
+              left: '60%',
+              top: '5%',
+              width: 'shrink',
+              height: 'shrink',
+              draggable: true
+            })
 
-          const info: ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff'] = ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff']
-          const detailsText = []
-          for (const key of info) {
-            if (profile.user.details[key] !== null && typeof profile.user.details[key] !== 'undefined') {
-              detailsText.push(`${bold(key + ":")} ${profile.user.details[key]}`)
+            const info: ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff'] = ['location', 'gender', 'birthday', 'email', 'createdAt', 'occupation', 'verified', 'staff']
+            const detailsText = []
+            for (const key of info) {
+              if (profile.user.details[key] !== null && typeof profile.user.details[key] !== 'undefined') {
+                detailsText.push(`${bold(key + ":")} ${profile.user.details[key]}`)
+              }
             }
-          }
-          const presence = blessed.text({
-            left: '60%',
-            top: '10%',
-            width: 'shrink',
-            height: '17%',
-            content: '',
-            draggable: true,
-            scrollable: true,
-          })
-          profile.on('presenceUpdate', (_, pres) => {
-            if (pres.activity) {
-              const typeName = pres.activity.type.replace('_', ' ').toLowerCase()
-              presence.setContent(`${bold(typeName.charAt(0).toUpperCase() + typeName.slice(1))}\n${pres.activity.type === 'CUSTOM_STATUS' ? pres.activity.state : pres.activity.name}\n\nStatus: ${pres.status}`)
-            } else {
-              presence.setContent(`\n\nStatus: ${pres.status ? pres.status : 'offline'}`)
-            }
+            const presence = blessed.text({
+              left: '60%',
+              top: '10%',
+              width: 'shrink',
+              height: '17%',
+              content: '',
+              draggable: true,
+              scrollable: true,
+            })
+            profile.on('presenceUpdate', (_, pres) => {
+              if (pres.activity) {
+                const typeName = pres.activity.type.replace('_', ' ').toLowerCase()
+                presence.setContent(`${bold(typeName.charAt(0).toUpperCase() + typeName.slice(1))}\n${pres.activity.type === 'CUSTOM_STATUS' ? pres.activity.state : pres.activity.name}\n\nStatus: ${pres.status}`)
+              } else {
+                presence.setContent(`\n\nStatus: ${pres.status ? pres.status : 'offline'}`)
+              }
+              screen.append(presence)
+              screen.render()
+            })
             screen.append(presence)
-            screen.render()
-          })
-          screen.append(presence)
-          const connections = []
-          for (const [_,discordConnection] of profile.user.discordConnections) {
-            connections.push(`${bold(`${discordConnection.type}:`)} ${discordConnection.name}`)
-          }
-          for (const [userConnectionType,userConnectionValue] of Object.entries(profile.user.userConnections)) {
-            connections.push(`${bold(`${userConnectionType}:`)} ${userConnectionValue}`)
-          }
-          const details = blessed.text({
-            border: 'line',
-            left: '60%',
-            top: '27%',
-            width: '40%',
-            content: `${profile.user.details.description}
+            const connections = []
+            for (const [_, discordConnection] of profile.user.discordConnections) {
+              connections.push(`${bold(`${discordConnection.type}:`)} ${discordConnection.name}`)
+            }
+            for (const [userConnectionType, userConnectionValue] of Object.entries(profile.user.userConnections)) {
+              connections.push(`${bold(`${userConnectionType}:`)} ${userConnectionValue}`)
+            }
+            const details = blessed.text({
+              border: 'line',
+              left: '60%',
+              top: '27%',
+              width: '40%',
+              content: `${profile.user.details.description}
             
 
 ${bold("User ID:")} ${profile.discord.id}
-` + detailsText.join('\n') + `\n\n${bold('Connections')}\n\n` 
-+ (connections.join('\n') || 'No connections'),
-            draggable: true,
-            scrollable: true,
-            alwaysScroll: true
-          })
-          screen.append(details)
-          const view_count = blessed.text({
-            content: `0 views`,
-            left: '92%',
-            top: '5%',
-            width: 'shrink',
-            height: 'shrink',
-            hidden: false,
-            draggable: true
-          })
-          profile.on('viewCountUpdate', (_oldCount, newCount) => {
-            view_count.setContent(`${newCount} views`)
-            view_count.show()
-            screen.render()
-          })
-          const like_count = blessed.text({
-            content: `${profile.user.details.likes} likes`,
-            left: '80%',
-            top: '5%',
-            width: 'shrink',
-            height: 'shrink',
-            draggable: true
-          })
-          tag.on('click', () => {
-            return
-            //copy(profile.discord.tag, {})
-          })
-          screen.append(view_count)
-          screen.append(like_count)
-          avatarBox.append(avatarASCII)
-          screen.append(tag)
-          screen.append(avatarBox)
-          screen.append(button)
-          button.enableInput()
-          button.focus()
-          const loadHome = () => {
-            [like_count,tag,view_count,avatarBox,bannerBox,details,presence,button].forEach(element => {
-              element.destroy()
+` + detailsText.join('\n') + `\n\n${bold('Connections')}\n\n`
+                + (connections.join('\n') || 'No connections'),
+              draggable: true,
+              scrollable: true,
+              alwaysScroll: true
             })
-            list.show()
-            about.show()
-            list.enableKeys()
+            screen.append(details)
+            const view_count = blessed.text({
+              content: `0 views`,
+              left: '92%',
+              top: '5%',
+              width: 'shrink',
+              height: 'shrink',
+              hidden: false,
+              draggable: true
+            })
+            profile.on('viewCountUpdate', (_oldCount, newCount) => {
+              view_count.setContent(`${newCount} views`)
+              view_count.show()
+              screen.render()
+            })
+            const like_count = blessed.text({
+              content: `${profile.user.details.likes} likes`,
+              left: '80%',
+              top: '5%',
+              width: 'shrink',
+              height: 'shrink',
+              draggable: true
+            })
+            tag.on('click', () => {
+              return
+              //copy(profile.discord.tag, {})
+            })
+            screen.append(view_count)
+            screen.append(like_count)
+            avatarBox.append(avatarASCII)
+            screen.append(tag)
+            screen.append(avatarBox)
+            screen.append(button)
+            button.enableInput()
+            button.focus()
+            const loadHome = () => {
+              [like_count, tag, view_count, avatarBox, bannerBox, details, presence, button].forEach(element => {
+                element.destroy()
+              })
+              list.show()
+              about.show()
+              list.enableKeys()
+              screen.render()
+            }
+            button.once('press', loadHome)
+            screen.onceKey('home', loadHome)
+            loading.stop()
+            loading.destroy()
             screen.render()
-          }
-          button.once('press',loadHome)
-          screen.onceKey('home',loadHome)
-          loading.stop()
-          loading.destroy()
+          })
+      })
+      screen.append(prompt)
+      screen.render()
+    }; break
+    case 2: {
+      bio.topLikes()
+        .then(profiles => {
+          loader(screen, profiles.users)
           screen.render()
         })
-    })
-screen.append(prompt)
-screen.render()
     }; break
     case 3: process.exit(); break
   }
