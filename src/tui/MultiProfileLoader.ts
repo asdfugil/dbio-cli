@@ -53,6 +53,16 @@ function loader(screen: blessed.Widgets.Screen, profiles: Collection<Snowflake, 
   ))
     .then(avatarPoolArray => new Collection<Snowflake, string>(avatarPoolArray))
     .then(avatarPool => {
+      const profilesHolder = blessed.box({
+        alwaysScroll:true,
+        scrollable:true,
+        scrollbar:{
+          style:{
+            fg:'white',
+            ch:'|'
+          }
+        }
+      })
       for (const [user_id, asciifiedAvatar] of avatarPool) {
         const profileBox = new PartialProfileBox({
           boxOptions: {
